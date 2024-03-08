@@ -33,11 +33,11 @@ jobs:
         platform:
           - ubuntu-latest
           - warp-ubuntu-latest-x64-4x
-          - ec2-m7a
-          - ec2-m6idn
+          # - ec2-m7a
+          # - ec2-m6idn
+          - ubuntu-22.04-16core
         kvm:
           - true
-          - false
 
     steps:
       - if: ${{ matrix.platform }} == 'ubuntu-latest'
