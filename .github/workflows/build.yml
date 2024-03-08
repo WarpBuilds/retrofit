@@ -35,7 +35,7 @@ jobs:
           - warp-ubuntu-latest-x64-4x
           # - ec2-m7a
           # - ec2-m6idn
-          - ubuntu-22.04-16core
+          - gha-ubuntu-latest-x64-4x
         kvm:
           - true
 
