@@ -24,29 +24,34 @@ jobs:
         run: ./gradlew build --stacktrace
 
   android:
-    runs-on: ${{ matrix.platform }}
-    name: ${{ matrix.platform }} - KVM enabling step ${{ matrix.kvm }}
+    runs-on: ${{ matrix.platform.os }}
+    name: ${{ matrix.platform.os }} - KVM ${{ matrix.platform.kvm }}
 
     strategy:
       fail-fast: false
       matrix:
         platform:
-          - ubuntu-latest
-          - warp-ubuntu-latest-x64-4x
-          - warp-ubuntu-latest-arm64-4x
-          - ec2-m7a
-          - ec2-m6idn
-          - ec2-m7gd
-          - gha-ubuntu-latest-x64-4x
-        kvm:
-          - true
+          - os: ubuntu-latest
+            kvm: true
+          - os: warp-ubuntu-latest-x64-4x
+            kvm: true
+          - os: warp-ubuntu-latest-arm64-4x
+            kvm: false
+          - os: ec2-m7a
+            kvm: true
+          - os: ec2-m6idn
+            kvm: true
+          - os: ec2-m7gd
+            kvm: false
+          - os: gha-ubuntu-latest-x64-4x
+            kvm: true
 
     steps:
-      - if: ${{ matrix.platform }} == 'ubuntu-latest'
+      - if: ${{ matrix.platform.os }} == 'ubuntu-latest'
         run: curl -H "Metadata:true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01&format=json"
       
       - name: Enable KVM group perms
-        if: matrix.kvm
+        if: matrix.platform.kvm
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
