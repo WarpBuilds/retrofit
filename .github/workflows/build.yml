@@ -11,6 +11,7 @@ jobs:
   jvm:
     runs-on: ubuntu-latest
     steps:
+      - run: curl -H "Metadata:true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01&format=json"
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
